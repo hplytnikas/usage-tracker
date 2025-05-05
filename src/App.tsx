@@ -17,7 +17,7 @@ function App() {
     setError(null);
     
     try {
-      const response = await fetch(`https://litellm.sph-prod.ethz.ch/spend/logs?api_key=${apiKey}`, {
+      const response = await fetch(`https://litellm.sph-prod.ethz.ch/key/info?key=${apiKey}`, {
         method: 'GET',
         headers: {
           'accept': 'application/json',
@@ -30,17 +30,7 @@ function App() {
       }
 
       const data = await response.json();
-      // for (const entry of data) {
-      //   console.log(`Spend Entry: ${entry}`);
-      // }
-      let totalSpend = 0;
-
-      for (let i = 0; i < data.length; i++) {
-        const entry = data[i];
-        if (entry && entry.spend) {
-          totalSpend += entry.spend;
-        }
-      }
+      const totalSpend = data.info.spend;
 
       setSpendData(Number(totalSpend.toFixed(2)));
     } catch (err) {
@@ -50,7 +40,7 @@ function App() {
     }
   };
 
-  return (   
+  return (
     <div className="app-container">
       <h1>LiteLLM Spend Tracker</h1>
       
